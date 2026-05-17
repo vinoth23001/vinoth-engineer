@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vinoth Y — Backend Developer</title>
+<meta name="description" content="Vinoth Y — Backend & Web Developer based in Chennai. Skilled in Python, Java, AI/ML, and Web Development.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #0a0a0a;
+  --white: #fafafa;
+  --gray-50: #f7f7f7;
+  --gray-100: #efefef;
+  --gray-200: #e0e0e0;
+  --gray-400: #aaaaaa;
+  --gray-600: #666666;
+  --gray-800: #222222;
+  --accent: #111111;
+  --shadow: 6px 6px 0px var(--black);
+  --shadow-lg: 10px 10px 0px var(--black);
+  --shadow-sm: 3px 3px 0px var(--black);
+  --radius: 0px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ── */
+#cur { width:10px;height:10px;background:var(--black);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%); }
+#cur-ring { width:38px;height:38px;border:2px solid var(--black);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .2s,height .2s,border-color .2s; }
+body:has(a:hover) #cur-ring, body:has(button:hover) #cur-ring { width:56px;height:56px;border-color:var(--gray-400); }
+
+/* ── LOADER ── */
+#loader {
+  position:fixed;inset:0;background:var(--black);z-index:99999;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;
+  transition:opacity 0.6s ease;
+}
+#loader.hide { opacity:0;pointer-events:none; }
+.loader-name {
+  font-family:'Bebas Neue',sans-serif;font-size:64px;letter-spacing:8px;color:var(--white);
+  animation: loaderPulse 1s ease infinite alternate;
+}
+.loader-bar-wrap { width:200px;height:2px;background:#333; }
+.loader-bar { height:100%;background:var(--white);width:0%;transition:width 1.2s ease; }
+@keyframes loaderPulse { from{opacity:0.4} to{opacity:1} }
+
+/* ── NAV ── */
+nav {
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 56px;
+  background:rgba(250,250,250,0.92);
+  backdrop-filter:blur(16px);
+  border-bottom:2px solid var(--black);
+  transition:padding 0.3s;
+}
+nav.scrolled { padding:10px 56px; }
+.nav-logo {
+  font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:4px;color:var(--black);
+  text-decoration:none;
+}
+.nav-menu { display:flex;gap:6px;list-style:none;align-items:center; }
+.nav-menu a {
+  color:var(--gray-600);text-decoration:none;
+  font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  padding:8px 14px;transition:all 0.2s;position:relative;
+}
+.nav-menu a:hover { color:var(--black); }
+.nav-menu .nav-cta {
+  background:var(--black);color:var(--white);
+  padding:9px 20px;border:2px solid var(--black);
+  box-shadow:var(--shadow-sm);transition:all 0.15s;
+}
+.nav-menu .nav-cta:hover { box-shadow:1px 1px 0 var(--black);transform:translate(2px,2px);color:var(--white); }
+
+/* ── HERO ── */
+.hero {
+  min-height:100vh;padding:130px 56px 80px;
+  display:grid;grid-template-columns:1fr 380px;gap:60px;align-items:center;
+  background:var(--white);position:relative;overflow:hidden;
+}
+.hero-bg-text {
+  position:absolute;bottom:-20px;left:0;right:0;
+  font-family:'Bebas Neue',sans-serif;font-size:22vw;letter-spacing:-4px;
+  color:rgba(0,0,0,0.03);line-height:1;pointer-events:none;white-space:nowrap;
+  user-select:none;
+}
+.hero-left { position:relative;z-index:1; }
+.hero-badge {
+  display:inline-flex;align-items:center;gap:8px;
+  border:2px solid var(--black);padding:7px 18px;
+  font-size:10px;font-weight:800;letter-spacing:0.22em;text-transform:uppercase;
+  margin-bottom:28px;box-shadow:var(--shadow-sm);
+  animation:fadeUp 0.5s ease both;
+}
+.blink { width:7px;height:7px;background:#22c55e;border-radius:50%;animation:blink 1.4s infinite; }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
+
+.hero h1 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(70px,10vw,130px);
+  line-height:0.92;letter-spacing:1px;
+  margin-bottom:10px;
+  animation:fadeUp 0.6s 0.1s ease both;
+}
+.hero h1 .stroke {
+  -webkit-text-stroke:3px var(--black);color:transparent;display:block;
+}
+.hero-role {
+  font-family:'Playfair Display',serif;font-style:italic;font-size:20px;
+  color:var(--gray-600);margin-bottom:22px;font-weight:400;
+  animation:fadeUp 0.6s 0.2s ease both;
+}
+.hero-desc {
+  font-size:15px;color:var(--gray-600);line-height:1.85;
+  max-width:500px;margin-bottom:36px;
+  animation:fadeUp 0.6s 0.3s ease both;
+}
+.hero-actions {
+  display:flex;gap:14px;flex-wrap:wrap;
+  animation:fadeUp 0.6s 0.4s ease both;
+}
+
+/* Buttons */
+.btn {
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 30px;font-family:'Outfit',sans-serif;
+  font-weight:700;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;
+  text-decoration:none;border:2px solid var(--black);cursor:none;
+  transition:all 0.15s ease;
+}
+.btn-dark { background:var(--black);color:var(--white);box-shadow:var(--shadow); }
+.btn-dark:hover { box-shadow:2px 2px 0 var(--black);transform:translate(4px,4px);color:var(--white); }
+.btn-light { background:var(--white);color:var(--black);box-shadow:var(--shadow); }
+.btn-light:hover { box-shadow:2px 2px 0 var(--black);transform:translate(4px,4px); }
+
+/* Profile card */
+.hero-right { position:relative;z-index:1;animation:fadeUp 0.7s 0.3s ease both; }
+.profile-card {
+  border:2px solid var(--black);background:var(--white);
+  box-shadow:var(--shadow-lg);overflow:hidden;
+}
+.profile-img-wrap {
+  width:100%;aspect-ratio:1;background:var(--gray-100);
+  display:flex;align-items:center;justify-content:center;
+  border-bottom:2px solid var(--black);position:relative;overflow:hidden;
+}
+.profile-avatar {
+  width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:12px;
+  background:linear-gradient(145deg,#f0f0f0,#e0e0e0);
+}
+.avatar-circle {
+  width:120px;height:120px;border-radius:50%;
+  background:var(--black);display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--white);
+  letter-spacing:2px;border:3px solid var(--black);box-shadow:5px 5px 0 rgba(0,0,0,0.2);
+}
+.avatar-label {
+  font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gray-600);
+}
+.profile-info { padding:24px; }
+.profile-name {
+  font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;margin-bottom:4px;
+}
+.profile-title { font-size:12px;color:var(--gray-600);font-weight:600;letter-spacing:0.1em;margin-bottom:16px;text-transform:uppercase; }
+.profile-tags { display:flex;flex-wrap:wrap;gap:6px; }
+.profile-tag {
+  font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  border:1.5px solid var(--black);padding:4px 10px;
+}
+
+/* ── SECTION COMMONS ── */
+.section { padding:100px 56px; }
+.section.dark { background:var(--black);color:var(--white); }
+.section.light { background:var(--white); }
+.section.gray { background:var(--gray-50);border-top:2px solid var(--black);border-bottom:2px solid var(--black); }
+
+.eyebrow {
+  font-size:10px;font-weight:800;letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--gray-400);margin-bottom:10px;display:flex;align-items:center;gap:10px;
+}
+.eyebrow::before { content:'';width:28px;height:2px;background:currentColor;flex-shrink:0; }
+.section.dark .eyebrow { color:#444; }
+
+.sec-title {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(42px,5.5vw,68px);
+  letter-spacing:2px;line-height:1;
+  margin-bottom:56px;
+}
+.section.dark .sec-title { text-shadow:6px 6px 0 #222; }
+.section.light .sec-title { text-shadow:6px 6px 0 var(--gray-100); }
+.section.gray .sec-title { text-shadow:6px 6px 0 var(--gray-200); }
+
+/* ── ABOUT ── */
+.about-grid { display:grid;grid-template-columns:1.3fr 1fr;gap:80px;align-items:start; }
+.about-text p { font-size:15px;color:var(--gray-600);line-height:1.9;margin-bottom:18px; }
+.about-text p strong { color:var(--black);font-weight:700; }
+
+.stat-grid { display:grid;grid-template-columns:1fr 1fr;gap:14px; }
+.stat-box {
+  border:2px solid var(--black);padding:26px 22px;background:var(--white);
+  box-shadow:var(--shadow);transition:all 0.15s;
+}
+.stat-box:hover { transform:translate(4px,4px);box-shadow:2px 2px 0 var(--black); }
+.stat-n { font-family:'Bebas Neue',sans-serif;font-size:50px;letter-spacing:2px;line-height:1;margin-bottom:4px; }
+.stat-l { font-size:10px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--gray-400); }
+
+.hobby-row { display:flex;flex-wrap:wrap;gap:10px;margin-top:26px; }
+.hobby-chip {
+  border:2px solid var(--black);padding:7px 16px;font-size:12px;font-weight:700;
+  background:var(--white);box-shadow:var(--shadow-sm);cursor:default;transition:all 0.15s;
+}
+.hobby-chip:hover { background:var(--black);color:var(--white);transform:translate(2px,2px);box-shadow:1px 1px 0 var(--black); }
+
+/* ── SKILLS ── */
+.skills-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2px; }
+.skill-box {
+  background:#111;border:2px solid #1e1e1e;padding:36px 32px;
+  transition:all 0.25s;position:relative;overflow:hidden;
+}
+.skill-box::after {
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--white);transform:scaleX(0);transform-origin:left;transition:transform 0.3s ease;
+}
+.skill-box:hover::after { transform:scaleX(1); }
+.skill-box:hover { background:#181818;border-color:#2a2a2a; }
+.skill-icon { font-size:26px;margin-bottom:14px; }
+.skill-cat-name { font-size:10px;font-weight:800;letter-spacing:0.22em;text-transform:uppercase;color:#555;margin-bottom:18px; }
+.skill-tags { display:flex;flex-wrap:wrap;gap:8px; }
+.s-tag { border:1px solid #2a2a2a;padding:5px 12px;font-size:12px;font-weight:500;color:#bbb;transition:all 0.2s; }
+.s-tag:hover { border-color:var(--white);color:var(--white); }
+
+/* Skill bars */
+.skill-bars { margin-top:60px; }
+.skill-bars-title {
+  font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:var(--white);
+  margin-bottom:32px;
+}
+.bar-item { margin-bottom:22px; }
+.bar-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:8px; }
+.bar-name { font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#ccc; }
+.bar-pct { font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--white); }
+.bar-track { height:4px;background:#1e1e1e;position:relative; }
+.bar-fill {
+  height:100%;background:var(--white);width:0%;
+  transition:width 1.2s cubic-bezier(0.4,0,0.2,1);
+  box-shadow:0 0 8px rgba(255,255,255,0.3);
+}
+
+/* ── PROJECTS ── */
+.proj-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:24px; }
+.proj-card {
+  border:2px solid var(--black);padding:44px 40px;background:var(--white);
+  box-shadow:var(--shadow-lg);transition:all 0.15s ease;position:relative;
+  display:flex;flex-direction:column;
+}
+.proj-card.inv { background:var(--black);color:var(--white); }
+.proj-card:hover { box-shadow:3px 3px 0 var(--black);transform:translate(7px,7px); }
+.proj-num {
+  font-family:'Bebas Neue',sans-serif;font-size:72px;line-height:1;
+  opacity:0.07;margin-bottom:10px;letter-spacing:2px;
+}
+.proj-title { font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;margin-bottom:14px;line-height:1.1; }
+.proj-desc { font-size:14px;color:var(--gray-600);line-height:1.85;margin-bottom:24px;flex:1; }
+.proj-card.inv .proj-desc { color:#999; }
+.proj-footer { display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap; }
+.tech-pills { display:flex;flex-wrap:wrap;gap:7px; }
+.t-pill {
+  border:1.5px solid var(--black);padding:4px 11px;font-size:10px;
+  font-weight:800;letter-spacing:0.12em;text-transform:uppercase;transition:all 0.2s;
+}
+.proj-card.inv .t-pill { border-color:#333;color:#aaa; }
+.t-pill:hover { background:var(--black);color:var(--white); }
+.proj-card.inv .t-pill:hover { background:var(--white);color:var(--black); }
+.proj-link {
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;
+  text-decoration:none;color:var(--black);border-bottom:2px solid var(--black);
+  padding-bottom:2px;white-space:nowrap;transition:opacity 0.2s;
+}
+.proj-card.inv .proj-link { color:var(--white);border-color:var(--white); }
+.proj-link:hover { opacity:0.6; }
+
+/* ── EDUCATION ── */
+.edu-layout { display:grid;grid-template-columns:1fr 1fr;gap:60px; }
+.edu-item {
+  border:2px solid var(--black);padding:28px 28px 28px 30px;background:var(--white);
+  box-shadow:var(--shadow);margin-bottom:18px;transition:all 0.15s;position:relative;
+}
+.edu-item::before {
+  content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--black);
+}
+.edu-item:hover { box-shadow:2px 2px 0 var(--black);transform:translate(4px,4px); }
+.edu-period { font-size:10px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray-400);margin-bottom:7px; }
+.edu-name { font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:1px;margin-bottom:4px; }
+.edu-place { font-size:13px;color:var(--gray-600);margin-bottom:5px; }
+.edu-grade { font-size:13px;font-weight:800;color:var(--black); }
+
+/* CERTS */
+.cert-card {
+  border:2px solid var(--black);padding:20px 24px;background:var(--white);
+  box-shadow:var(--shadow);display:flex;align-items:center;gap:16px;
+  margin-bottom:14px;transition:all 0.15s;
+}
+.cert-card:hover { box-shadow:2px 2px 0 var(--black);transform:translate(4px,4px);background:var(--black);color:var(--white); }
+.cert-icon { font-family:'Bebas Neue',sans-serif;font-size:24px;flex-shrink:0;width:36px;text-align:center; }
+.cert-text { font-size:14px;font-weight:600; }
+
+/* ── CONTACT ── */
+.contact-inner { max-width:860px;margin:0 auto;text-align:center; }
+.contact-big {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(52px,9vw,110px);
+  letter-spacing:4px;color:var(--white);
+  line-height:0.92;margin-bottom:16px;
+  text-shadow:10px 10px 0 #1a1a1a;
+}
+.contact-big .outline { -webkit-text-stroke:3px var(--white);color:transparent;display:block; }
+.contact-sub {
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:18px;color:#555;margin-bottom:56px;
+}
+.contact-grid {
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:14px;margin-bottom:48px;
+}
+.c-card {
+  border:2px solid #222;padding:20px 18px;color:#bbb;text-decoration:none;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  box-shadow:5px 5px 0 #222;transition:all 0.15s;
+}
+.c-card:hover { border-color:var(--white);color:var(--white);box-shadow:2px 2px 0 var(--white);transform:translate(3px,3px); }
+.c-icon { font-size:22px; }
+.c-label { font-size:10px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase; }
+.c-value { font-size:12px;font-weight:500;word-break:break-all; }
+
+/* ── FOOTER ── */
+footer {
+  background:var(--black);border-top:2px solid #111;
+  padding:22px 56px;display:flex;justify-content:space-between;align-items:center;
+  color:#333;font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;
+}
+footer a { color:#333;text-decoration:none;margin-left:18px;transition:color 0.2s; }
+footer a:hover { color:var(--white); }
+
+/* ── REVEAL ── */
+.reveal { opacity:0;transform:translateY(44px);transition:opacity 0.75s ease,transform 0.75s ease; }
+.reveal.up { opacity:1;transform:translateY(0); }
+
+/* ── TILT ── */
+.tilt3d { transition:transform 0.08s ease;transform-style:preserve-3d; }
+
+/* ── SCROLL PROGRESS ── */
+#progress { position:fixed;top:0;left:0;height:3px;background:var(--black);z-index:9999;width:0%;transition:width 0.1s; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(32px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── MOBILE ── */
+@media(max-width:900px){
+  nav{padding:14px 20px;}
+  .nav-menu{gap:2px;}
+  .nav-menu li:nth-child(n+4){display:none;}
+  .hero{grid-template-columns:1fr;padding:110px 20px 60px;gap:40px;}
+  .hero-right{display:none;}
+  .section{padding:70px 20px;}
+  .about-grid,.edu-layout{grid-template-columns:1fr;gap:40px;}
+  footer{padding:18px 20px;flex-direction:column;gap:8px;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS -->
+<div id="progress"></div>
+
+<!-- CURSOR -->
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-name">VY</div>
+  <div class="loader-bar-wrap"><div class="loader-bar" id="lbar"></div></div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">VINOTH Y</a>
+  <ul class="nav-menu">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="https://github.com/vinoth23001" target="_blank">GitHub ↗</a></li>
+    <li><a href="#contact" class="nav-cta">Hire Me</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-bg-text">VINOTH</div>
+  <div class="hero-left">
+    <div class="hero-badge"><span class="blink"></span> Available for opportunities</div>
+    <h1>
+      VINOTH
+      <span class="stroke">Y.</span>
+    </h1>
+    <p class="hero-role">Backend & Web Developer</p>
+    <p class="hero-desc">
+      Fresh B.Tech graduate in Computer Science (AI) — passionate about building scalable backend systems and applying AI/ML to real-world problems. Based in Chennai, India.
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn btn-dark">View My Work →</a>
+      <a href="#contact" class="btn btn-light">Get In Touch</a>
+      <a href="#" class="btn btn-light" onclick="downloadResume(event)">⬇ Download Resume</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="profile-card tilt3d">
+      <div class="profile-img-wrap">
+        <div class="profile-avatar">
+          <div class="avatar-circle">VY</div>
+          <div class="avatar-label">Vinoth Y · Chennai</div>
+        </div>
+      </div>
+      <div class="profile-info">
+        <div class="profile-name">VINOTH Y</div>
+        <div class="profile-title">Backend & Web Developer</div>
+        <div class="profile-tags">
+          <span class="profile-tag">Python</span>
+          <span class="profile-tag">AI / ML</span>
+          <span class="profile-tag">Java</span>
+          <span class="profile-tag">MySQL</span>
+          <span class="profile-tag">AWS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<section id="about" class="section gray">
+  <div class="eyebrow">01 — About Me</div>
+  <h2 class="sec-title">WHO I AM</h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm <strong>Vinoth Y</strong>, a fresh B.Tech graduate in <strong>Computer Science Engineering (AI)</strong> from Bharath Institute of Higher Education and Research, Chennai — in association with <strong>IBM</strong>.</p>
+      <p>My journey spans deep learning for text classification, neural style transfer with CNNs, and hands-on AI/ML internship experience. I thrive at the intersection of backend engineering and intelligent systems.</p>
+      <p>I'm a fast learner with strong problem-solving skills, always looking to grow and contribute to impactful projects. I believe <strong>curiosity is the best compiler</strong>.</p>
+      <div class="hobby-row">
+        <div class="hobby-chip">🎮 Gaming</div>
+        <div class="hobby-chip">🏏 Cricket</div>
+        <div class="hobby-chip">✏️ Drawing</div>
+        <div class="hobby-chip">📚 Reading</div>
+      </div>
+    </div>
+    <div class="stat-grid reveal">
+      <div class="stat-box"><div class="stat-n">7.5</div><div class="stat-l">CGPA · B.Tech</div></div>
+      <div class="stat-box"><div class="stat-n">3+</div><div class="stat-l">Certifications</div></div>
+      <div class="stat-box"><div class="stat-n">2</div><div class="stat-l">AI/ML Projects</div></div>
+      <div class="stat-box"><div class="stat-n">4</div><div class="stat-l">Years Study</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SKILLS ══ -->
+<section id="skills" class="section dark">
+  <div class="eyebrow">02 — Skills</div>
+  <h2 class="sec-title" style="color:var(--white);">WHAT I WORK WITH</h2>
+
+  <div class="skills-grid">
+    <div class="skill-box reveal">
+      <div class="skill-icon">⚙️</div>
+      <div class="skill-cat-name">Languages</div>
+      <div class="skill-tags">
+        <span class="s-tag">Python</span><span class="s-tag">Java</span><span class="s-tag">C</span>
+      </div>
+    </div>
+    <div class="skill-box reveal">
+      <div class="skill-icon">🌐</div>
+      <div class="skill-cat-name">Web Development</div>
+      <div class="skill-tags">
+        <span class="s-tag">HTML</span><span class="s-tag">CSS</span><span class="s-tag">JavaScript</span>
+      </div>
+    </div>
+    <div class="skill-box reveal">
+      <div class="skill-icon">🗄️</div>
+      <div class="skill-cat-name">Database</div>
+      <div class="skill-tags"><span class="s-tag">MySQL</span></div>
+    </div>
+    <div class="skill-box reveal">
+      <div class="skill-icon">🛠️</div>
+      <div class="skill-cat-name">Tools & Cloud</div>
+      <div class="skill-tags">
+        <span class="s-tag">GitHub</span><span class="s-tag">AWS (Basic)</span>
+      </div>
+    </div>
+    <div class="skill-box reveal">
+      <div class="skill-icon">🤖</div>
+      <div class="skill-cat-name">AI / ML</div>
+      <div class="skill-tags">
+        <span class="s-tag">Deep Learning</span><span class="s-tag">CNN</span>
+        <span class="s-tag">NLP</span><span class="s-tag">Scikit-learn</span>
+      </div>
+    </div>
+    <div class="skill-box reveal">
+      <div class="skill-icon">🧠</div>
+      <div class="skill-cat-name">Soft Skills</div>
+      <div class="skill-tags">
+        <span class="s-tag">Adaptability</span><span class="s-tag">Teamwork</span>
+        <span class="s-tag">Communication</span><span class="s-tag">Time Mgmt</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SKILL BARS -->
+  <div class="skill-bars reveal">
+    <div class="skill-bars-title">PROFICIENCY</div>
+    <div class="bar-item">
+      <div class="bar-header"><span class="bar-name">Python</span><span class="bar-pct">80%</span></div>
+      <div class="bar-track"><div class="bar-fill" data-w="80"></div></div>
+    </div>
+    <div class="bar-item">
+      <div class="bar-header"><span class="bar-name">Machine Learning / AI</span><span class="bar-pct">75%</span></div>
+      <div class="bar-track"><div class="bar-fill" data-w="75"></div></div>
+    </div>
+    <div class="bar-item">
+      <div class="bar-header"><span class="bar-name">Java</span><span class="bar-pct">70%</span></div>
+      <div class="bar-track"><div class="bar-fill" data-w="70"></div></div>
+    </div>
+    <div class="bar-item">
+      <div class="bar-header"><span class="bar-name">HTML / CSS / JavaScript</span><span class="bar-pct">72%</span></div>
+      <div class="bar-track"><div class="bar-fill" data-w="72"></div></div>
+    </div>
+    <div class="bar-item">
+      <div class="bar-header"><span class="bar-name">MySQL</span><span class="bar-pct">65%</span></div>
+      <div class="bar-track"><div class="bar-fill" data-w="65"></div></div>
+    </div>
+    <div class="bar-item">
+      <div class="bar-header"><span class="bar-name">AWS (Basic)</span><span class="bar-pct">45%</span></div>
+      <div class="bar-track"><div class="bar-fill" data-w="45"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROJECTS ══ -->
+<section id="projects" class="section light">
+  <div class="eyebrow">03 — Projects</div>
+  <h2 class="sec-title">WHAT I'VE BUILT</h2>
+  <div class="proj-grid">
+    <div class="proj-card tilt3d reveal">
+      <div class="proj-num">01</div>
+      <div class="proj-title">CYBERBULLYING HATE TEXT DETECTION</div>
+      <p class="proj-desc">Built a deep learning text classification model to detect cyberbullying-related hate speech. Leveraged neural networks to identify and flag harmful content with high accuracy — a real-world NLP application for safer online spaces.</p>
+      <div class="proj-footer">
+        <div class="tech-pills">
+          <span class="t-pill">Python</span>
+          <span class="t-pill">Deep Learning</span>
+          <span class="t-pill">NLP</span>
+          <span class="t-pill">Neural Networks</span>
+        </div>
+        <a href="https://github.com/vinoth23001" target="_blank" class="proj-link">View Code →</a>
+      </div>
+    </div>
+    <div class="proj-card inv tilt3d reveal">
+      <div class="proj-num">02</div>
+      <div class="proj-title">ARTISTIC STYLE TRANSFER WITH CNN</div>
+      <p class="proj-desc">Implemented a CNN-based system that reimagines photographs in the style of famous artworks. Explored feature extraction and Gram matrices for real-time artistic transformation using deep learning.</p>
+      <div class="proj-footer">
+        <div class="tech-pills">
+          <span class="t-pill">Python</span>
+          <span class="t-pill">CNN</span>
+          <span class="t-pill">Computer Vision</span>
+          <span class="t-pill">TensorFlow</span>
+        </div>
+        <a href="https://github.com/vinoth23001" target="_blank" class="proj-link">View Code →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EDUCATION ══ -->
+<section id="education" class="section gray">
+  <div class="eyebrow">04 — Education & Certifications</div>
+  <h2 class="sec-title">MY ACADEMIC PATH</h2>
+  <div class="edu-layout">
+    <div>
+      <div class="eyebrow" style="margin-bottom:20px;">Education & Experience</div>
+      <div class="edu-item reveal">
+        <div class="edu-period">Jun 2021 – May 2025</div>
+        <div class="edu-name">B.TECH — CS ENGINEERING (AI)</div>
+        <div class="edu-place">Bharath Institute of Higher Education & Research, Chennai · IBM</div>
+        <div class="edu-grade">CGPA: 7.5 / 10</div>
+      </div>
+      <div class="edu-item reveal">
+        <div class="edu-period">Jul 2017 – May 2020</div>
+        <div class="edu-name">DIPLOMA — AUTOMOBILE ENGINEERING</div>
+        <div class="edu-place">SRM University, Kattankolathur</div>
+        <div class="edu-grade">Percentage: 70%</div>
+      </div>
+      <div class="edu-item reveal">
+        <div class="edu-period">Internship</div>
+        <div class="edu-name">VIRTUAL INTERNSHIP — AI & ML</div>
+        <div class="edu-place">Artificial Intelligence & Machine Learning Domain</div>
+        <div class="edu-grade">Real-world AI/ML techniques and tools</div>
+      </div>
+      <div class="edu-item reveal">
+        <div class="edu-period">Workshop</div>
+        <div class="edu-name">ML IN HEALTH SCIENCES</div>
+        <div class="edu-place">SRM University — Real-Time Applications of Machine Learning</div>
+      </div>
+    </div>
+    <div>
+      <div class="eyebrow" style="margin-bottom:20px;">Certifications</div>
+      <div class="cert-card reveal">
+        <div class="cert-icon">01</div>
+        <div class="cert-text">Machine Learning with Python</div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-icon">02</div>
+        <div class="cert-text">Data Visualization with R</div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-icon">03</div>
+        <div class="cert-text">Data Visualization with Python</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section id="contact" class="section dark">
+  <div class="contact-inner">
+    <div class="eyebrow" style="justify-content:center;">05 — Contact</div>
+    <div class="contact-big reveal">
+      LET'S BUILD
+      <span class="outline">TOGETHER.</span>
+    </div>
+    <p class="contact-sub reveal">Open to backend roles, internships & collaborations</p>
+    <div class="contact-grid reveal">
+      <a href="mailto:vinothtata23@gmail.com" class="c-card">
+        <div class="c-icon">✉</div>
+        <div class="c-label">Email</div>
+        <div class="c-value">vinothtata23@gmail.com</div>
+      </a>
+      <a href="tel:+916380172985" class="c-card">
+        <div class="c-icon">☎</div>
+        <div class="c-label">Phone</div>
+        <div class="c-value">+91 6380172985</div>
+      </a>
+      <a href="https://www.linkedin.com/in/vinoth-y-a34b71256" target="_blank" class="c-card">
+        <div class="c-icon">in</div>
+        <div class="c-label">LinkedIn</div>
+        <div class="c-value">vinoth-y-a34b71256</div>
+      </a>
+      <a href="https://github.com/vinoth23001" target="_blank" class="c-card">
+        <div class="c-icon">⌥</div>
+        <div class="c-label">GitHub</div>
+        <div class="c-value">github.com/vinoth23001</div>
+      </a>
+    </div>
+    <a href="mailto:vinothtata23@gmail.com" class="btn btn-light reveal" style="margin:0 auto;">Say Hello →</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Vinoth Y · Chennai, India</span>
+  <span>
+    <a href="https://www.linkedin.com/in/vinoth-y-a34b71256" target="_blank">LinkedIn ↗</a>
+    <a href="https://github.com/vinoth23001" target="_blank">GitHub ↗</a>
+    <a href="mailto:vinothtata23@gmail.com">Email ↗</a>
+  </span>
+</footer>
+
+<script>
+// ── LOADER ──
+window.addEventListener('load', () => {
+  const bar = document.getElementById('lbar');
+  bar.style.width = '100%';
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hide');
+  }, 1400);
+});
+
+// ── CURSOR ──
+const cur = document.getElementById('cur');
+const ring = document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
+});
+(function animRing(){
+  rx+=(mx-rx)*0.13; ry+=(my-ry)*0.13;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+})();
+
+// ── NAV SCROLL ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+  // progress bar
+  const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+});
+
+// ── SCROLL REVEAL ──
+const reveals = document.querySelectorAll('.reveal');
+const ro = new IntersectionObserver(entries => {
+  entries.forEach((e,i) => {
+    if(e.isIntersecting) setTimeout(() => e.target.classList.add('up'), i*90);
+  });
+}, {threshold:0.1});
+reveals.forEach(el => ro.observe(el));
+
+// ── SKILL BARS ──
+const barObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.querySelectorAll('.bar-fill').forEach(b => {
+        b.style.width = b.dataset.w + '%';
+      });
+      barObs.unobserve(e.target);
+    }
+  });
+}, {threshold:0.3});
+document.querySelectorAll('.skill-bars').forEach(el => barObs.observe(el));
+
+// ── 3D TILT ──
+document.querySelectorAll('.tilt3d').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left)/r.width - 0.5;
+    const y = (e.clientY - r.top)/r.height - 0.5;
+    card.style.transform = `perspective(700px) rotateY(${x*10}deg) rotateX(${-y*10}deg)`;
+  });
+  card.addEventListener('mouseleave', () => { card.style.transform=''; });
+});
+
+// ── RESUME DOWNLOAD ──
+function downloadResume(e) {
+  e.preventDefault();
+  const content = `VINOTH Y
+Backend & Web Developer
+Chennai, Tamil Nadu, India
+Email: vinothtata23@gmail.com | Phone: +91 6380172985
+LinkedIn: linkedin.com/in/vinoth-y-a34b71256 | GitHub: github.com/vinoth23001
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SUMMARY
+Motivated and detail-oriented aspiring Back-End and Web Developer with a strong
+foundation in programming. Seeking an opportunity to apply and enhance my skills by
+working on real-world web development projects. Passionate about learning new
+technologies and growing in backend development.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EDUCATION
+
+B.Tech in Computer Science Engineering (AI) — in association with IBM
+Bharath Institute of Higher Education and Research, Chennai
+Jun 2021 – May 2025 | CGPA: 7.5/10
+
+Diploma in Automobile Engineering
+SRM University, Kattankolathur
+Jul 2017 – May 2020 | Percentage: 70%
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TECHNICAL SKILLS
+
+Languages      : Python, Java, C
+Web Development: HTML, CSS, JavaScript
+Database       : MySQL
+Tools          : GitHub
+Cloud          : AWS (Basic)
+AI / ML        : Deep Learning, CNN, NLP, Scikit-learn
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PROJECTS
+
+1. Enhanced Cyberbullying-Related Hate Text Detection Using Neural Network
+   Built a text classification model using deep learning to detect hate speech.
+   Tech: Python, Deep Learning, NLP, Neural Networks
+
+2. Artistic Style Transfer with CNN
+   Used convolutional neural networks to apply artistic styles to images.
+   Tech: Python, CNN, Computer Vision, TensorFlow
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTERNSHIP
+Virtual Internship – Artificial Intelligence Machine Learning
+Gained exposure to real-world AI/ML techniques and tools.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CERTIFICATIONS
+• Machine Learning with Python
+• Data Visualization with R
+• Data Visualization with Python
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WORKSHOPS
+Real-Time Applications of Machine Learning in Health Sciences – SRM University
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SOFT SKILLS
+Adaptability, Communication, Teamwork, Time Management, Active Listening
+
+HOBBIES
+Gaming, Cricket, Drawing, Reading Books`;
+
+  const blob = new Blob([content], {type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download='Vinoth_Y_Resume.txt'; a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
