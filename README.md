@@ -1,2 +1,2 @@
 # vinoth-engineer
-Personal portfolio website
+Professional portfolio website for AI and backend development projects.
